@@ -1926,7 +1926,8 @@ body.viewer-mode .comm-badges { display: none !important; }
 // без backend — пароль виден в коде как SHA-256 хеш, можно brute-force).
 // Но достаточно чтобы случайно зашедший человек не мог сразу что-то изменить.
 //
-// Текущий пароль: (у владельца) (μάθησις по-гречески — учение/знание + 23 мая).
+// Текущие пароли (admin и viewer): в Связке ключей владельца, записи
+// matema-fest-programmer-admin и matema-fest-programmer-viewer; копия — в сейфе.
 // Чтобы поменять — посчитать SHA-256 нового слова и заменить PASSWORD_HASH.
 // В терминале: echo -n "новый_пароль" | sha256sum
 //
@@ -1942,8 +1943,8 @@ body.viewer-mode .comm-badges { display: none !important; }
 //
 // Хранится в sessionStorage как "admin:<timestamp>" или "viewer:<timestamp>".
 // Старый формат — просто число — интерпретируется как admin (обратная совместимость).
-const ADMIN_PASSWORD_HASH  = 'a53c75a6ee1b3ef1b4b8f1d9d6f235634aec96411f7209f1bbc15d5108078688';
-const VIEWER_PASSWORD_HASH = 'ed46ada4dbf68c5bcbb81fbb8d3a5dcfcd27a715849ede8802c8df8c3ee8591b';
+const ADMIN_PASSWORD_HASH  = '5573b0f36d9e1df9538b3bf243a5f59693c53234f56ce4baec4a7c349e0a1b2d';
+const VIEWER_PASSWORD_HASH = '83a19140ad4054a11b800b54bb19c716b026bf3f450c0d2379308ff079a8983c';
 const UNLOCK_KEY = 'programmer.unlocked';
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000;
 const HIDDEN_TIMEOUT_MS = 5 * 60 * 1000;
