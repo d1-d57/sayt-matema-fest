@@ -1,0 +1,46 @@
+name: post-deploy-check
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - '**/*.css'
+      - '**/*.js'
+
+permissions:
+  contents: write
+
+jobs:
+  pagespeed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for GitHub Pages redeploy
+        run: sleep 90
+
+      - name: Run pagespeed.sh
+        env:
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+        run: |
+          if [ -z "${PAGESPEED_API_KEY:-}" ]; then
+            echo "::error::PAGESPEED_API_KEY secret is not set."
+            exit 1
+          fi
+          chmod +x scripts/pagespeed.sh
+          bash scripts/pagespeed.sh
+
+      - name: Commit report
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain .pagespeed)" ]; then
+            git add .pagespeed
+            git commit -m "chore: post-deploy pagespeed report"
+            git push
+          else
+            echo "No new pagespeed files to commit."
+          fi
